@@ -4,11 +4,6 @@ class Time_man
   end
 
   def time?
-    return @time + 10 < Time.now
+    return @time + 600 < Time.now
   end
-
 end
-
-clock = Time_man.new
-sleep 12
-puts clock.time?

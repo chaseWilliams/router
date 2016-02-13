@@ -18,6 +18,6 @@ class Controller
   end
 
   def img
-    ISource.getImg @outside[:temp]
+    ISource.getImg @outside[:temp], @outside[:condition_id]
   end
 end

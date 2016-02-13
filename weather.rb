@@ -53,18 +53,21 @@ module ISource
   @cold = [23577541545]
   @fog = [8469962417, 14919486574]
   @snow = [89074472]
-  @cool = [12043895515, 20342715613 ]
+  @cool = [12043895515, 20342715613]
   @warm = [3704273935, 3780893961, 16021074821, 6357276861]
   @hot = [23959664094, 9557006394, 16391611278, 8248259072]
   @really_hot = [19656910812, 5951751285]
   @rain = [6845995798, 9615537120, 6133720797, 15274211811]
-  def getImg(temp) #compares with weather condition codes
+  def getImg(temp, id) #compares with weather condition codes
     #weather conditions first; highest priority.
-    if (Weather_man.getWeather(4219934)[:condition_id] >= 200 && Weather_man.getWeather(4219934)[:condition_id] < 600) #rain?
+    is_foggy = false
+    [701, 721, 741].each {|k| if k == id then is_foggy = true;puts 'yes' end}
+
+    if (id >= 200 && id < 600) #rain?
       return imgUrl @rain[rand(@rain.length)-1]
-    elsif Weather_man.getWeather(4219934)[:condition_id] >= 600 && Weather_man.getWeather(4219934)[:condition_id] < 700 #snow?
+    elsif id >= 600 && id < 700#snow?
       return imgUrl @snow[rand(@snow.length)-1]
-    elsif ([701, 721, 741].each {|k| k == Weather_man.getWeather(4219934)[:condition_id]}) #fog?
+    elsif (is_foggy) #fog?
       return imgUrl @fog[rand(@fog.length)-1]
     elsif temp <= 10 #cold?
       return imgUrl @cold[rand(@cold.length)-1] #this mechanism returns a random photo id from the array.
@@ -80,3 +83,5 @@ module ISource
   end
   module_function :getImg
 end
+
+puts ISource.getImg 36, 800

@@ -10,17 +10,16 @@ get '/' do
     windiness: master.outside[:windiness],
     id: master.outside[:condition_id],
     name: master.outside[:condition_name],
+    weather_img: master.outside[:condition_img],
     description: master.outside[:condition_description],
     sensor_temp: master.inside[:temp],
     sensor_humidity: master.inside[:humidity],
     background_img: master.img
   }
   puts hash
-  hash.each {|key, value| ENV[key.to_s] = value}
-  erb :home
+  #hash.each {|key, value| ENV[key.to_s] = value.to_s}
+  erb :home, locals: hash
 end
-puts "The master.outside returns #{master.outside.class}"
-puts master.outside.values
 hash = {
   outside_temp: master.outside[:temp],
   outside_humidity: master.outside[:humidity],
@@ -28,10 +27,10 @@ hash = {
   windiness: master.outside[:windiness],
   id: master.outside[:condition_id],
   name: master.outside[:condition_name],
+  weather_img: master.outside[:condition_img],
   description: master.outside[:condition_description],
   sensor_temp: master.inside[:temp],
   sensor_humidity: master.inside[:humidity],
   background_img: master.img
 }
-hash.each {|key, value| puts "The key #{key} has a class of #{key.class}, while the value #{value} has a class of #{value.class}
-Maybe #{"#{key}".class}"}
+puts hash

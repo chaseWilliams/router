@@ -2,16 +2,28 @@ require './router/loader'
 
 class App < Sinatra::Application
 
-  # Remember that this is a helper function that will process each request (regardless of endpoint) before
-  # processing the get/post/put sections below
   before do
     content_type 'application/json'
-    # [...other code will go here, if needed...]
   end
 
-  # You'll repeat this for each endpoint this app will host and for each HTTP method
-  get '/<whatever_path>' do
-    # [...your code will go here...]
+  get '/' do
+    puts ENV['OWM_URI']
+    Logger.new(STDOUT).warn 'hello'
+    begin
+      lat = params[:lat]
+      lon = params[:lon]
+    rescue StandardError => err
+      status 400
+      {status: 'fail', reason: err.to_s}.to_json
+    else
+      weather = JSON.parse RestClient.get ENV['OWM_URI'] + "mode=coordinates&lat=#{lat}&lon=#{lon}"
+      puts weather
+      wiki_article = JSON.parse RestClient.get ENV['WIKI_URI'] + "lat=#{lat}&lon=#{lon}"
+      puts wiki_article
+      flickr_url = JSON.parse RestClient.get ENV['FLICKR_URI'] + "temp=#{weather['data']['temp']}" +
+                                                              "&id=#{weather['data']['condition_id']}"
+      puts flickr_url
+      {status: 'ok', weather: weather, article: wiki_article, pic: flickr_url}.to_json
+    end
   end
-
 end

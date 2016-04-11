@@ -37,4 +37,10 @@ class App < Sinatra::Application
       RestClient.get ENV['OWM_URI_PURE'] + "mode=coordinates&lat=#{lat}&lon=#{lon}"
     end
   end
+
+  # this is for the front end
+  set :public_folder, 'public'
+  get '/example' do
+    redirect 'index.html'
+  end
 end

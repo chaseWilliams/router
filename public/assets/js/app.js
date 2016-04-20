@@ -1,4 +1,6 @@
-var api_url = 'http://router.roswell.apcera-platform.io/?'
+//needs to be changed depending on where deployed
+var api_url = 'https://weather-mashup-demo-dude0faw3.c9users.io/?'
+
 new Vue({
   el: '#app',
   data: {
@@ -23,9 +25,14 @@ new Vue({
     return {'background-image': 'url("'+this.pic_url+'")'}
     },
     url_to_wiki: function(){
+      console.log("wiki title is " + this.$get('wiki_title'))
       var baseurl = 'https://en.wikipedia.org/wiki/'
-      var title = this.$get(wiki_title).replace(' ', '_')
-      return {'href': '' + baseurl + title}
+      var title = this.$get('wiki_title')
+      while (title.indexOf(' ') != -1) {
+        title = title.replace(' ', '_')
+      }
+      console.log("created the url " + baseurl + title)
+      return baseurl + title;
     }
   },
 
@@ -86,8 +93,12 @@ new Vue({
         this.$set('wiki_title', data.article.title)
           console.log("the city is ")
           console.log(weather.city)
+          console.log("the wiki title is")
+          console.log(this.$get('wiki_title'))
         this.$set('city', weather.city)
       }.bind(this));
+      this.url_to_wiki;
+      this.background_style;
     }
   }
 });

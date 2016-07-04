@@ -7,6 +7,10 @@ class App < Sinatra::Application
   end
 
   get '/' do
+    RestClient.get ENV['UI_URI']
+  end
+
+  get '/api' do
     puts ENV['OWM_URI']
     Logger.new(STDOUT).warn 'hello'
     begin

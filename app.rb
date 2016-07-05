@@ -7,6 +7,7 @@ class App < Sinatra::Application
   end
 
   get '/' do
+    content_type 'text/html'
     RestClient.get ENV['UI_URI']
   end
 

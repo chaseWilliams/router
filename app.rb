@@ -8,7 +8,15 @@ class App < Sinatra::Application
 
   get '/' do
     content_type 'text/html'
-    RestClient.get ENV['UI_URI']
+    headers 'Location': ENV['ROUTER_URI']
+    body RestClient.get ENV['UI_URI'] + request.path_info
+  end
+
+  get '/assets/*' do
+    data = RestClient.get ENV['UI_URI'] + request.path_info
+    headers 'Location': ENV['ROUTER_URI']
+    content_type data.headers[:content_type]
+    body data
   end
 
   get '/api' do
@@ -43,9 +51,4 @@ class App < Sinatra::Application
     end
   end
 
-  # this is for the front end
-  set :public_folder, 'public'
-  get '/example' do
-    redirect 'index.html'
-  end
 end
